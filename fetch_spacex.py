@@ -1,22 +1,9 @@
 import requests
 
-from pathlib import Path
-
-IMAGE_FOLDER = 'spacex'
+from image_tools import download_image
 
 
-def get_image(url, filename):
-    Path(IMAGE_FOLDER).mkdir(parents=True, exist_ok=True)
-    filename = Path.cwd() / IMAGE_FOLDER / filename
-
-    response = requests.get(url)
-    response.raise_for_status()
-
-    with open(filename, 'wb') as file:
-        file.write(response.content)
-
-
-def fetch_launch(launch_id):
+def fetch_launch(launch_id, folder):
     url = f'https://api.spacexdata.com/v4/launches/{launch_id}'
     response = requests.get(url)
     response.raise_for_status()
@@ -24,7 +11,7 @@ def fetch_launch(launch_id):
 
     for image_number, image_link in enumerate(images):
         filename = f'spacex{image_number}.jpg'
-        get_image(image_link, filename)
+        download_image(image_link, filename, folder)
 
 
 def find_last_launch_with_images():
@@ -38,10 +25,11 @@ def find_last_launch_with_images():
             return launch['id']
 
 
-def fetch_spacex_last_launch():
+def fetch_spacex_last_launch(folder):
     launch_id = find_last_launch_with_images()
-    fetch_launch(launch_id)
+    fetch_launch(launch_id, folder)
 
 
 if __name__ == '__main__':
-    fetch_spacex_last_launch()
+    folder = 'spacex'
+    fetch_spacex_last_launch(folder)
