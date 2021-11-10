@@ -1,9 +1,9 @@
-import requests
-from environs import Env
-
-import os
 import datetime
+import os
 from urllib.parse import urlparse, unquote
+
+from environs import Env
+import requests
 
 from image_tools import download_image
 

@@ -1,6 +1,6 @@
-import requests
-
 from pathlib import Path
+
+import requests
 
 
 def make_folder(folder):
