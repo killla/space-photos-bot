@@ -9,10 +9,10 @@ def make_folder(folder):
 
 def download_image(url, filename, folder):
     make_folder(folder)
-    filename = Path.cwd() / folder / filename
+    file_path = Path.cwd() / folder / filename
 
     response = requests.get(url)
     response.raise_for_status()
 
-    with open(filename, 'wb') as file:
+    with open(file_path, 'wb') as file:
         file.write(response.content)
