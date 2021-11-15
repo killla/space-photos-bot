@@ -4,8 +4,7 @@ import requests
 
 
 def make_folder(folder):
-    if not Path.is_dir(folder):
-        Path(folder).mkdir(parents=True, exist_ok=True)
+    Path(folder).mkdir(parents=True, exist_ok=True)
 
 
 def download_image(url, filename, folder):
