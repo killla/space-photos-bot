@@ -21,10 +21,10 @@ def fetch_nasa_apod(nasa_api_token, count, folder):
     images = response.json()
 
     for image_number, image in enumerate(images):
-        if 'url' in image:  # skip pages without url
+        if 'url' in image:
             image_url = image['url']
             ext = get_ext(image_url)
-            if ext:  # skip videos
+            if ext:
                 filename = f'nasa{image_number}{ext}'
                 download_image(image_url, filename, folder)
 

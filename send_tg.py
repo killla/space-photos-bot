@@ -34,7 +34,7 @@ if __name__ == '__main__':
         for image in get_image('.'):
             send_image(image, bot, tg_channel)
             time.sleep(period)
-            os.remove(image)  # избегаем повторной отправки одной и той же картинки
+            os.remove(image)
         fetch_spacex_last_launch('spacex')
         fetch_nasa_epic(nasa_api_token, 'nasa_epic')
         fetch_nasa_apod(nasa_api_token, count, 'nasa_apod')
