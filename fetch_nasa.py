@@ -15,31 +15,35 @@ def get_ext(url):
 
 
 def fetch_nasa_apod(nasa_api_token, count, folder):
-    url = f'https://api.nasa.gov/planetary/apod?api_key={nasa_api_token}&count={count}'
-    response = requests.get(url)
+    url = f'https://api.nasa.gov/planetary/apod'
+    payload = {'api_key': nasa_api_token,
+               'count': count}
+    response = requests.get(url, params=payload)
     response.raise_for_status()
     images = response.json()
 
     for image_number, image in enumerate(images):
-        if 'url' in image:
-            image_url = image['url']
-            ext = get_ext(image_url)
-            if ext:
-                filename = f'nasa{image_number}{ext}'
-                download_image(image_url, filename, folder)
+        if 'url' not in image:
+            continue
+        image_url = image['url']
+        ext = get_ext(image_url)
+        if ext:
+            filename = f'nasa{image_number}{ext}'
+            download_image(image_url, filename, folder)
 
 
 def fetch_nasa_epic(nasa_api_token, folder):
-    url = f'https://api.nasa.gov/EPIC/api/natural/images?api_key={nasa_api_token}'
-    response = requests.get(url)
+    url = f'https://api.nasa.gov/EPIC/api/natural/images'
+    payload = {'api_key': nasa_api_token}
+    response = requests.get(url, params=payload)
     response.raise_for_status()
     images = response.json()
     for image_number, image in enumerate(images):
         date = datetime.datetime.fromisoformat(image['date'])
         name = image['image']
-        image_url = f'https://api.nasa.gov/EPIC/archive/natural/{date.year}/{date:%m}/{date:%d}/png/{name}.png?api_key={nasa_api_token}'
+        image_url = f'https://api.nasa.gov/EPIC/archive/natural/{date.year}/{date:%m}/{date:%d}/png/{name}.png'
         filename = f'{name}{image_number}.png'
-        download_image(image_url, filename, folder)
+        download_image(image_url, filename, folder, payload)
 
 
 if __name__ == '__main__':
